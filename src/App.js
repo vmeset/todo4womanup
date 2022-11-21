@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext, useEffect } from 'react';
+import Form from './components/Form';
+import List from './components/List';
+import { Context } from './context/Context';
 
-function App() {
+const App = () => {
+
+  const {loading, fetchTodos, todos} = useContext(Context)
+
+  useEffect(() => {
+      fetchTodos()
+    }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Form />
+      {loading
+          ? <p>Loading..</p>
+          : <List todos={todos} />
+      }
+    </>
   );
-}
+};
 
 export default App;
