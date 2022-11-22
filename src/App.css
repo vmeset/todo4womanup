@@ -21,11 +21,19 @@
   margin: 5px;
 }
 .my-form .title {
-  width: 300px;
+  width: 250px;
 }
 .my-form .file {
   width: 300px;
   border: none;
+  margin-left: 20px;
+}
+.my-form .react-datepicker__input-container {
+  margin-top: 3px;
+}
+.my-form .react-datepicker__input-container input {
+  border: none;
+  cursor: pointer;
 }
 .todo {
   display: flex;

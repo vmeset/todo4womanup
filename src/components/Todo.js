@@ -2,34 +2,38 @@ import React, { useEffect, useState } from 'react'
 import { storage } from '../firebase'
 import { ref, deleteObject, getDownloadURL } from "firebase/storage"
 import attachment from '../img/attachment.svg'
+import * as dayjs from 'dayjs'
 
 const Todo = ({todo, removeTodo, updateTodo}) => {
 
+    // const [imgUrl, setImgurl] = useState('')
     const imageRef = ref(storage, `images/${todo.img}`)
-    const [imgUrl, setImgurl] = useState('')
     
     const onRemove = (id) => {
         removeTodo(id)
-        deleteObject(imageRef).then(() => {
-            }).catch((error) => {
-        })
+        if(!!todo.img) {
+            deleteObject(imageRef).then(() => {
+                }).catch((error) => {
+                    console.log(error)
+                }
+            )
+        }
     }
 
-    useEffect(() => {
-        if(todo.img){
-            getDownloadURL(imageRef).then((url) => {
-                setImgurl(url)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-        }
-    }, [])
-    
+    // useEffect(() => {
+    //     if(todo.img){
+    //         getDownloadURL(imageRef).then((url) => {
+    //             setImgurl(url)
+    //         })
+    //         .catch((error) => {
+    //             console.log(error)
+    //         })
+    //     }
+    // }, [])
 
-    const viewImg = () => {
+    const showImg = () => {
         getDownloadURL(imageRef).then((url) => {
-            setImgurl(url)
+            window.open(url)
         })
         .catch((error) => {
             console.log(error)
@@ -44,7 +48,24 @@ const Todo = ({todo, removeTodo, updateTodo}) => {
             </div>
             <div className='options'>
                 <div>
-                    <small>{todo.date}</small>
+                    {!!todo.date
+                        ? dayjs().diff(todo.date) < 0
+                            ?   
+                                <>
+                                    <p>expire in</p>
+                                    <small>{dayjs(todo.date).format("HH:mm DD-MM-YY")}</small>
+                                </>
+                            : 
+                                <>
+                                    <p style={{backgroundColor: 'red'}}>
+                                        expired
+                                    </p>
+                                    <small>{dayjs(todo.date).format("HH:mm DD-MM-YY")}</small>
+                                </>
+                        : <>
+                            <p>NO DATE</p>
+                        </>
+                    }
                 </div>
                 <div style={{display: 'flex', alignItems: 'center'}}>
                     <button onClick={() => onRemove(todo.id)}>
@@ -57,12 +78,11 @@ const Todo = ({todo, removeTodo, updateTodo}) => {
                         : <button onClick={() => updateTodo(todo)}>
                             ✓
                         </button>
-                        
                     }
                     {!!todo.img
-                        ? <a href={imgUrl} target="_blank">
-                            <img src={attachment} alt="attachment" width='20' />
-                        </a>
+                        ? <img src={attachment} alt="attachment" width='20' 
+                            onClick={showImg}
+                            />
                         : <></>
                     }
                 </div>
