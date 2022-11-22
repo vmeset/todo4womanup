@@ -1,25 +1,23 @@
-import React, { useContext, useEffect } from 'react';
-import Form from './components/Form';
-import List from './components/List';
-import { Context } from './context/Context';
+import React, { useContext, useEffect } from 'react'
+import Form from './components/Form'
+import List from './components/List'
+import { Context } from './context/Context'
+import './App.css';
 
 const App = () => {
 
-  const {loading, fetchTodos, todos} = useContext(Context)
+  const {fetchTodos, todos, removeTodo, updateTodo} = useContext(Context)
 
   useEffect(() => {
       fetchTodos()
-    }, [])
+  }, [])
 
   return (
-    <>
+    <div className='container'>
       <Form />
-      {loading
-          ? <p>Loading..</p>
-          : <List todos={todos} />
-      }
-    </>
-  );
-};
+      <List todos={todos} removeTodo={removeTodo} updateTodo={updateTodo} />
+    </div>
+  )
+}
 
-export default App;
+export default App

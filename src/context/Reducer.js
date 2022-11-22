@@ -7,11 +7,19 @@ const actions = {
     todos: [...state.todos, payload]
   }),
   [FETCH_TODOS]: (state, {payload}) => ({...state, todos: payload, loading: false}),
-//   [UPDATE_TODO]: (state, {payload}) => ({...state, todos: payload, loading: false}),
   [REMOVE_TODO]: (state, {payload}) => ({
     ...state,
     todos: state.todos.filter(todo => todo.id !== payload)
   }),
+  [UPDATE_TODO]: (state, {payload}) =>(
+     {...state, todos: state.todos.map(todo => {
+        if(todo.id === payload) {
+          if (todo.completed) {
+            return {...todo, completed: false}
+          } else {return {...todo, completed: true}}
+        }
+        return todo
+    })}),
   DEFAULT: state => state
 }
 
