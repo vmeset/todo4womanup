@@ -1,6 +1,12 @@
 import React from 'react';
 import Todo from './Todo';
 
+/**
+ * Стрелочная функция компонент принимает список задач и две функции
+ * @param {*} param0 массив объектов todos и фукнции удаление и обновление
+ * @returns Возвращает массив Todo компонент
+ */
+
 const List = ({todos, removeTodo, updateTodo}) => {
 
     return (

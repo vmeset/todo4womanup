@@ -5,9 +5,7 @@ import { Context } from './context/Context'
 import './App.css';
 
 const App = () => {
-
   const {fetchTodos, todos, removeTodo, updateTodo} = useContext(Context)
-
   useEffect(() => {
       fetchTodos()
   }, [])

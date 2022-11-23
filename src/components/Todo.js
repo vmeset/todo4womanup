@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { storage } from '../firebase'
 import { ref, deleteObject, getDownloadURL } from "firebase/storage"
 import attachment from '../img/attachment.svg'
 import * as dayjs from 'dayjs'
-
+/**
+ * Стрелочная функция отрисовывает компонент Todo
+ * @param {*} param0 Параметрами принимает объект todo, функции удаления и обновления
+ * @returns Возвращает JSX, который отрисовывает каждую задачу из списка
+ */
 const Todo = ({todo, removeTodo, updateTodo}) => {
-
-    // const [imgUrl, setImgurl] = useState('')
     const imageRef = ref(storage, `images/${todo.img}`)
-    
+    /**
+     * Функция удаляет объект из базы данных по указанному id
+     * @param {string} id id в виде строки, автоматически сгенерированный БД
+     */
     const onRemove = (id) => {
         removeTodo(id)
         if(!!todo.img) {
@@ -19,18 +24,9 @@ const Todo = ({todo, removeTodo, updateTodo}) => {
             )
         }
     }
-
-    // useEffect(() => {
-    //     if(todo.img){
-    //         getDownloadURL(imageRef).then((url) => {
-    //             setImgurl(url)
-    //         })
-    //         .catch((error) => {
-    //             console.log(error)
-    //         })
-    //     }
-    // }, [])
-
+    /**
+     * Функция генерирует ссылку для изображения и открывает его в новом окне
+     */
     const showImg = () => {
         getDownloadURL(imageRef).then((url) => {
             window.open(url)
@@ -80,9 +76,7 @@ const Todo = ({todo, removeTodo, updateTodo}) => {
                         </button>
                     }
                     {!!todo.img
-                        ? <img src={attachment} alt="attachment" width='20' 
-                            onClick={showImg}
-                            />
+                        ? <img src={attachment} alt="attachment" width='20' onClick={showImg}/>
                         : <></>
                     }
                 </div>

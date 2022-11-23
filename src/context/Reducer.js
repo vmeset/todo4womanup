@@ -1,7 +1,6 @@
-import {SHOW_LOADER, CREATE_TODO, FETCH_TODOS, REMOVE_TODO, UPDATE_TODO} from '../utils/consts'
+import {CREATE_TODO, FETCH_TODOS, REMOVE_TODO, UPDATE_TODO} from '../utils/consts'
 
 const actions = {
-  [SHOW_LOADER]: state => ({...state, loading: true}),
   [CREATE_TODO]: (state, {payload}) => ({
     ...state,
     todos: [...state.todos, payload]

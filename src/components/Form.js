@@ -1,36 +1,33 @@
 import React, { useContext, useState } from 'react'
-import * as dayjs from 'dayjs'
 import { Context } from '../context/Context'
 import { ref, uploadBytes } from 'firebase/storage'
 import { storage } from '../firebase'
 import { v4 } from 'uuid'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+/**
+ * Стрелочная функция компонент для созданий задач
+ * @returns Возвращает JSX, который отрисовывает форму для новых задач
+ */
 const Form = () => {
-
     const {createTodo} = useContext(Context)
     const [todo, setTodo] = useState({title: '', description: ''})
     const [imageUpload, setImageUpload] = useState(null)
     const imageInputRef = React.useRef()
-    
     const [expiredDate, setExpiredDate] = useState('')
-    const [isOpen, setIsOpen] = useState(false);
-    const handleChange = (e) => {
-        setIsOpen(!isOpen);
-        setExpiredDate(e);
-    };
-    const handleClick = (e) => {
-        e.preventDefault();
-        setIsOpen(!isOpen);
-    };
-
+    /**
+     * Функция проверяет наличие файла для отправки. Если файл выбран, загружает его в storage
+     * @param {string} fileName автоматически генерируемое имя файла
+     */
     const uploadImg = (fileName) => {
         if (imageUpload == null) return
         const imageRef = ref(storage, `images/${fileName}`)
         uploadBytes(imageRef, imageUpload)
     }
-
+    /**
+     * Функция проверяет загружен ли файл. Создает новый объект newTodo и загружает его на сервер
+     * @param {*} event параметр event передаем для предовращения действия браузера по умолчанию
+     */
     const submitHandler = event => {
         event.preventDefault()
         try {
@@ -58,18 +55,6 @@ const Form = () => {
       
     return (
         <>
-            {/* <button className="example-custom-input" onClick={handleClick}>
-                date
-            </button>
-            {isOpen && (
-                <DatePicker
-                    showTimeSelect
-                    // placeholderText='select date'
-                    selected={expiredDate}
-                    onChange={(date) => setExpiredDate(date)}
-                    inline
-                />
-            )} */}
             <form className='my-form' onSubmit={submitHandler}>
                 <input className='title' type="text" value={todo.title} 
                     placeholder='Enter title'
